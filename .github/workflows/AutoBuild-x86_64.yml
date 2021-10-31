@@ -4,7 +4,7 @@
 #   Author: Hyy2001X                                      #
 ###########################################################
 
-name: x86_64
+name: 编译x86_64
 
 ### 以下内容请保持不变 (请修改下方: 环境变量设置)
 on:
@@ -73,6 +73,7 @@ jobs:
         echo "Before_IP_Address=${{ github.event.inputs.IP }}" >> $GITHUB_WORKSPACE/Openwrt.info
         echo "Openwrt_Repository=$REPO_URL" >> $GITHUB_WORKSPACE/Openwrt.info
         echo "Artifacts_Date=$(date +%m%d%H%M)" >> $GITHUB_ENV
+
     - name: Initialization Environment
       env:
         DEBIAN_FRONTEND: noninteractive
@@ -88,6 +89,9 @@ jobs:
             sudo -E apt-get -y autoremove --purge
             sudo -E apt-get clean
         fi
+        TARGET_DEVICE_ARCH="$(grep "^CONFIG_TARGET_.*_${TARGET_DEVICE}=y$" "$GITHUB_WORKSPACE/Configs/$CONFIG_FILE" | head -n 1 | sed 's/^CONFIG_TARGET_//g' | awk -F '_' '{print $1}')"
+        echo "TARGET_DEVICE_ARCH=${TARGET_DEVICE_ARCH}" >>$GITHUB_ENV
+
     - name: Clone Openwrt Source Code
       run: |
         git clone -b $REPO_BRANCH $REPO_URL openwrt
@@ -95,6 +99,14 @@ jobs:
         cd openwrt
         ./scripts/feeds update -a
         ./scripts/feeds install -a > /dev/null 2>&1
+
+    - name: 缓存加速(7天内对应源码相同机型二次编译有效，每次只保留一个源码的缓存)
+      uses: klever1988/cachewrtbuild@test
+      with:
+        ccache: 'true'
+        mixkey: ${{ env.TARGET_DEVICE_ARCH }}
+        prefix: ${{ github.workspace }}/openwrt
+
     - name: Run AutoBuild_DiyScript.sh
       run: |
         chmod +x Scripts/AutoBuild_*.sh
@@ -106,21 +118,31 @@ jobs:
         Firmware-Diy_Main
         source $GITHUB_WORKSPACE/openwrt/VARIABLE_FILE && Firmware-Diy
         rm -f .config && cp $GITHUB_WORKSPACE/Configs/$CONFIG_FILE .config
-    - name: Compile
+
+    - name: 下载软件包
       run: |
-        export Compile_Result=false
         cd openwrt
         source $GITHUB_WORKSPACE/Scripts/AutoBuild_Function.sh && Firmware-Diy_Other
         rm -rf ./tmp && ./scripts/feeds install -a > /dev/null 2>&1
         make defconfig
-        make download -j$(nproc)
+        make download -j8
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
+
+    - name: 编译固件
+      run: |
+        export Compile_Result=false
+        cd openwrt
+        echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 V=s
         [ $? == 0 ] && echo "Compile_Result=true" >> $GITHUB_ENV
+
     - name: Process Firmware
       if: env.Compile_Result == 'true' && !cancelled()
       run: |
         cd openwrt
         source $GITHUB_WORKSPACE/Scripts/AutoBuild_Function.sh && Firmware-Diy_End
+
     - name: Upload Firmware to Artifacts
       uses: actions/upload-artifact@main
       if: env.UPLOAD_ARTIFACTS == 'true' && env.Compile_Result == 'true' && !cancelled()
