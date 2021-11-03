@@ -20,7 +20,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout
       uses: actions/checkout@main
@@ -28,7 +28,7 @@ jobs:
     - name: Download Github Release API
       run: |
         wget https://api.github.com/repos/${{github.repository}}/releases/tags/AutoUpdate -O API
-        
+
     - name: Upload API to Github Release
       uses: svenstaro/upload-release-action@v2
       with:
@@ -41,5 +41,5 @@ jobs:
     - name: Delete old Workflow Runs
       uses: GitRML/delete-workflow-runs@main
       with:
-        retain_days: 1
-        keep_minimum_runs: 1
+        retain_days: 30
+        keep_minimum_runs: 30
