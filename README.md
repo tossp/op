@@ -32,8 +32,7 @@ AutoBuild-Actions 稳定版/模板地址: [AutoBuild-Actions-Template](https://g
    **单独的软件包列表** 按照现有语法和提示编辑`/Scripts/AutoBuild_ExtraPackages.sh`
 
 **/Scripts/AutoBuild_DiyScript.sh: Diy_Core() 函数中的变量解释:**
-
-```md
+```
    Author 作者名称,若留空将自动获取为 Github 用户名
    
    Banner_Title Banner 标题,与作者名称一同在 Shell 展示
