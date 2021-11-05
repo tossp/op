@@ -29,7 +29,7 @@ jobs:
     - name: Run synchronise script
       run: |
         [ "${{github.event.inputs.sync_mode}}" == true ] && {
-            bash $GITHUB_WORKSPACE/Scripts/Sync.sh ${{secrets.GITHUB_TOKEN}} ${{github.repository}} --sync-all
+            bash $GITHUB_WORKSPACE/Scripts/Sync.sh ${{secrets.REPO_TOKEN}} ${{github.repository}} --sync-all
         } || {
-            bash $GITHUB_WORKSPACE/Scripts/Sync.sh ${{secrets.GITHUB_TOKEN}} ${{github.repository}}
+            bash $GITHUB_WORKSPACE/Scripts/Sync.sh ${{secrets.REPO_TOKEN}} ${{github.repository}}
         }
