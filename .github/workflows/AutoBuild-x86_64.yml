@@ -128,6 +128,7 @@ jobs:
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
+        cat .config | grep CONFIG_PACKAGE_luci-app
 
     - name: 编译固件
       run: |
