@@ -122,12 +122,17 @@ Firmware-Diy_Main() {
 		AddPackage svn lean luci-app-autoupdate Hyy2001X/AutoBuild-Packages/trunk
 		Copy ${CustomFiles}/Depends/profile ${base_files}/etc
 		Copy ${CustomFiles}/Depends/base-files-essential ${base_files}/lib/upgrade/keep.d
-		AutoUpdate_Version=$(egrep -o "V[0-9].+" ${base_files}/bin/AutoUpdate.sh | awk 'NR==1')
+		AutoUpdate_Version=$(awk -F '=' '/Version/{print $2}' ${base_files}/bin/AutoUpdate.sh | awk 'NR==1')
 		case "${OP_Maintainer}/${OP_REPO_NAME}" in
 		coolsnowwolf/lede)
 			Copy ${CustomFiles}/Depends/coremark.sh ${Home}/$(PKG_Finder d "package feeds" coremark)
 			sed -i '\/etc\/firewall.user/d;/exit 0/d' ${Version_File}
 			cat >> ${Version_File} <<EOF
+
+sed -i '/check_signature/d' /etc/opkg.conf
+sed -i 's#mirrors.cloud.tencent.com/lede#downloads.immortalwrt.cnsztl.eu.org#g' /etc/opkg/distfeeds.conf
+sed -i 's#18.06.9/##g' /etc/opkg/distfeeds.conf
+sed -i 's#releases/#snapshots/#g' /etc/opkg/distfeeds.conf
 
 sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/aliyundrive-webdav.lua
 sed -i 's/services/nas/g' /usr/lib/lua/luci/view/aliyundrive-webdav/aliyundrive-webdav_log.htm
@@ -141,12 +146,12 @@ sed -i 's/services/vpn/g' /usr/lib/lua/luci/view/v2ray_server/users_list_status.
 sed -i 's/services/vpn/g' /usr/lib/lua/luci/view/v2ray_server/users_list_status.htm
 sed -i 's/services/vpn/g' /usr/lib/lua/luci/view/v2ray_server/v2ray.htm
 
-if [ -z "$(grep "REDIRECT --to-ports 53" /etc/firewall.user)" ]
+if [ -z "\$(grep "REDIRECT --to-ports 53" /etc/firewall.user 2> /dev/null)" ]
 then
 	echo '#iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user
 	echo '#iptables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user
-	echo '#[ -n "$(command -v ip6tables)" ] && ip6tables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user
-	echo '#[ -n "$(command -v ip6tables)" ] && ip6tables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user
+	echo '#[ -n "\$(command -v ip6tables)" ] && ip6tables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user
+	echo '#[ -n "\$(command -v ip6tables)" ] && ip6tables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user
 fi
 exit 0
 EOF
@@ -269,6 +274,11 @@ EOF
 		fi
 		sed -i '/## TEST/d' .config >/dev/null 2>&1
 	fi
+	cat >> .config <<EOF
+
+CONFIG_KERNEL_BUILD_USER="${Author}"
+CONFIG_KERNEL_BUILD_DOMAIN="${Github}"
+EOF
 	ECHO "[Firmware-Diy_Other] Done."
 }
 
