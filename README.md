@@ -13,16 +13,16 @@ AutoBuild-Actions 稳定版仓库地址: [AutoBuild-Actions-Template](https://gi
 
 | 机型 | 配置文件 | 拥有设备 |
 | :----: | :----: | :----: |
-| x86_64 | x86_64 | ✅ |
-| 新路由3 | d-team_newifi-d2 | ✅ |
-| 华硕 acrh17 | asus_rt-acrh17 | ❎ |
-| 竞斗云 2.0 | p2w_r619ac-128m | ❎ |
-| 红米 AC2100 | xiaomi_redmi-router-ac2100 | ✅ |
-| 小娱C1/3/5 | xiaoyu_xy-c5 | ❎ |
+| [x86_64](./.github/workflows/AutoBuild-x86_64.yml) | [x86_64](./Configs/x86_64) | ✅ |
+| [新路由3](./.github/workflows/AutoBuild-d-team_newifi-d2.yml) | [d-team_newifi-d2](./Configs/d-team_newifi-d2 "点击") | ✅ |
+| [华硕 acrh17](./.github/workflows/AutoBuild-asus_rt-acrh17.yml) | [asus_rt-acrh17](./Configs/asus_rt-acrh17) | ❎ |
+| [竞斗云 2.0](./.github/workflows/AutoBuild-p2w_r619ac-128m.yml) | [p2w_r619ac-128m](./Configs/p2w_r619ac-128m) | ❎ |
+| [红米 AC2100](./.github/workflows/AutoBuild-xiaomi_redmi-router-ac2100.yml) | [xiaomi_redmi-router-ac2100](./Configs/xiaomi_redmi-router-ac2100) | ✅ |
+| [小娱C1/3/5](./.github/workflows/AutoBuild-xiaoyu_xy-c5.yml) | [xiaoyu_xy-c5](./Configs/xiaoyu_xy-c5) | ❎ |
 
 ## 一、定制固件(可选)
 
-   🎈 **提示**: 文中的 **TARGET_PROFILE** 均为你要编译的设备的设备名称, 例如: `d-team_newifi-d2`、`asus_rt-acrh17`
+   🎈 **提示**: 文中的 **TARGET_PROFILE** 为要编译的设备名称, 例如: `d-team_newifi-d2`、`asus_rt-acrh17`
 
    从本地获取: 在源码目录执行`egrep -o "CONFIG_TARGET.*DEVICE.*=y" .config | sed -r 's/.*DEVICE_(.*)=y/\1/'`
    
@@ -32,66 +32,65 @@ AutoBuild-Actions 稳定版仓库地址: [AutoBuild-Actions-Template](https://gi
 
    建议使用`Github Desktop`和`Notepad++`进行操作 [[Github Desktop](https://desktop.github.com/)] [[Notepad++](https://notepad-plus-plus.org/downloads/)]
 
-2. 编译`/Configs`目录下的配置文件, 若该设备的配置文件不存在则需要把本地的`.config`文件重命名为 **TARGET_PROFILE** 值并上传
+2. 编辑`/Configs`目录下的配置文件, 若配置文件不存在则需要在本地生成`.config`重命名并上传
 
-3. 编辑`/.github/workflows/*.yml`文件, 修改`第 7 行`为易于识别的设备名称
+3. 编辑`/.github/workflows/某设备.yml`文件, 修改`第 7 行`为随便的名称
 
-4. 编辑`/.github/workflows/*.yml`文件, 修改`第 32 行`为 **TARGET_PROFILE** 值
+4. 编辑`/.github/workflows/某设备.yml`文件, 修改`第 32 行`为上传的`.config`配置文件名称
 
-5. 按照需求且编辑`/Scripts/AutoBuild_DiyScript.sh`文件即可, `/Scripts`下的其他文件可以都不用修改
+5. 按照需求且编辑 [/Scripts/AutoBuild_DiyScript.sh](./Scripts/AutoBuild_DiyScript.sh), `/Scripts`下的其他文件无需修改
 
-   **单独的软件包列表** 按照现有语法和提示编辑`/Scripts/AutoBuild_ExtraPackages.sh`
-
-**/Scripts/AutoBuild_DiyScript.sh: Diy_Core() 函数中的变量解释:**
+**/Scripts/AutoBuild_DiyScript.sh: Firmware_Diy_Core() 函数中的变量解释:**
 ```
-   Author 作者名称,若留空将自动获取为 Github 用户名
+   Author 作者名称, AUTO: [自动识别]
    
-   Banner_Title Banner 标题,与作者名称一同在 Shell 展示
+   Author_URL 自定义作者网站或域名, 将写入到内核信息, 例如 AUTO: [自动识别]; "https://www.baidu.com"
 
-   * Default_LAN_IP 固件 IP 地址
+   Banner_Message 终端中显示的额外信息
 
-   Short_Firmware_Date 启用简短的固件日期 true: [20210601]; false: [202106012359]
+   Default_IP 固件初始 IP 地址
 
-   * Load_CustomPackages_List 启用后, 将运行 /Scripts/AutoBuild_ExtraPackages.sh 脚本
+   Short_Firmware_Date 简短的固件日期, 例如 true: [20210601]; false: [202106012359]
 
    Checkout_Virtual_Images 额外上传已检测到的 x86 虚拟磁盘镜像
    
-   Firmware_Format 自定义固件格式, 多个格式请用空格隔开
+   Firmware_Format 自定义固件格式, 例如 "bin img.gz tar.gz"; AUTO: [自动识别]
 
-   REGEX_Skip_Checkout 固件目录无用文件屏蔽正则表达式
+   REGEX_Skip_Checkout 输出固件时丢弃包含该内容的文件 [正则表达式]
 
-   * INCLUDE_AutoBuild_Features 自动添加 AutoBuild 固件特性, 例如: 一键更新、部分优化
+   INCLUDE_AutoBuild_Features 自动添加 AutoBuild 固件特性, 例如 一键更新固件; 固件工具箱
 
-   * INCLUDE_DRM_I915 自动启用 x86 设备的 Intel Graphics 显卡驱动
+   INCLUDE_DRM_I915 自动启用 x86 设备的 Intel Graphics 显卡驱动
 
-   INCLUDE_Obsolete_PKG_Compatible 完善原生 OpenWrt-19.07、21.02 支持 (测试特性)
+   INCLUDE_Original_OpenWrt_Compatible 完善原生 OpenWrt 支持, 例如 true: [自动识别]; 19.07; 21.02
    
-   注: 禁用部分功能请将变量值修改为 false, 开启则为 true
-   
-   带 * 符号的选项表示仅在 coolsnowwolf/lede 源码测试通过
+   注: 禁用某功能请将变量值修改为 false, 开启则为 true
+
 ```
 
 ## 二、编译固件(必选)
 
-   **手动编译** 点击上方`Actions`, 在左栏选择要编译的设备,点击右方`Run workflow`再点击绿色按钮即可开始编译
+   **手动编译** 点击上方`Actions`, 在左栏选择要编译的设备,点击右方`Run workflow`再点击`绿色按钮`即可开始编译
 
-   **一键编译** 删除`第 26-27 行`的注释并保存, 触发点亮右上角的 **Star** 按钮即可一键编译
+   **一键编译** 删除`第 29-30 行`的注释并保存, 触发点亮右上角的 **Star** 按钮即可一键编译
 
-   **定时编译** 删除`第 23-24 行`的注释, 然后按需修改时间并提交修改 [Corn 使用方法](https://www.runoob.com/w3cnote/linux-crontab-tasks.html)
+   **定时编译** 删除`第 26-27 行`的注释, 然后按需修改时间并提交修改 [Corn 使用方法](https://www.runoob.com/w3cnote/linux-crontab-tasks.html)
 
-   **自定义固件 IP 地址** 该功能仅在**手动编译**生效, 点击`Run workflow`后即可输入 IP 地址
+   **临时修改固件 IP 地址** 该功能仅在**手动编译**生效, 点击`Run workflow`后即可输入 IP 地址
+   
+   **使用其他 [.config] 配置文件** 点击`Run workflow`后即可输入位于`/Configs`下的配置文件名称
 
-   🔔 **为了你的账号安全, 请不要使用 SSH 连接 Github Action**, `.config`配置等操作请在本地完成
+   🔔 **为了你的账号安全, 请不要使用 SSH 连接 Github Action**, `.config`配置等操作请务必在本地完成
 
 ## 三、部署云端日志(可选)
 
-1. 下载本仓库中的 [Update_Logs.json](https://github.com/Hyy2001X/AutoBuild-Actions/releases/download/AutoUpdate/Update_Logs.json) 到本地
+1. 下载本仓库中的 [Update_Logs.json](https://github.com/Hyy2001X/AutoBuild-Actions/releases/download/AutoUpdate/Update_Logs.json) 到本地 (如果有)
 
-2. 以**JSON 格式**编辑`Update_Logs.json`
+2. 以 **JSON** 格式编辑本地的`Update_Logs.json`
 
-3. 上传修改后的`Update_Logs.json`到你仓库的`Release`
+3. 手动上传修改后的`Update_Logs.json`到`Github Release`
 
-4. 在本地执行`autoupdate`测试
+4. 在本地执行`autoupdate --fw-log`测试
 
 ## 使用一键更新固件脚本
 
@@ -113,7 +112,7 @@ AutoBuild-Actions 稳定版仓库地址: [AutoBuild-Actions-Template](https://gi
 
    查看所有可用参数: `autoupdate --help`
 
-   **注意: **部分参数可一起使用, 例如: `autoupdate -n -P G -F --skip --path /mnt/sda1`
+   **注意: **部分参数可一起使用, 例如 `autoupdate -n -P -F --path /mnt/sda1`
 
 ## 使用 tools 固件工具箱
 
