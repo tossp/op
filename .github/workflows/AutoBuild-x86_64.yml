@@ -6,15 +6,18 @@
 
 name: 编译x86_64
 
-### 以下内容请保持不变 (请修改下方: 环境变量设置)
+### 以下内容请保持不变 (请修改下方的 环境变量设置)
 on:
   repository_dispatch:
   workflow_dispatch:
     inputs:
-      IP:
-        description: '固件 IP 地址 [可选]'
+      Tempoary_IP:
+        description: '临时修改 IP 地址 [可选]'
         default: ''
-### END
+      Tempoary_CONFIG:
+        description: '配置文件 [可选]'
+        default: ''
+### 结束
 
   #push:
   #  branches:
