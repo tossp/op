@@ -3,22 +3,20 @@
 # AutoBuild DiyScript
 
 Firmware_Diy_Core() {
-
 	Author=TossP
-	Banner_Title="Powered by Lede"
-	Default_LAN_IP=192.168.9.1
+	Author_URL="https://nas.tossp.com"
+	Default_FLAG=AUTO
+	Default_IP="192.168.9.1"
+	Banner_Message="Powered by TossP.com"
 
-	Load_Common_Config=true
-	Load_CustomPackages_List=true
-	Short_Firmware_Date=false
+	Short_Firmware_Date=true
 	Checkout_Virtual_Images=true
-	Firmware_Format=false
+	Firmware_Format=AUTO
 	REGEX_Skip_Checkout="packages|buildinfo|sha256sums|manifest|kernel|rootfs|factory"
 
 	INCLUDE_AutoBuild_Features=true
 	INCLUDE_DRM_I915=false
-	INCLUDE_Argon=true
-	INCLUDE_Obsolete_PKG_Compatible=true
+	INCLUDE_Original_OpenWrt_Compatible=true
 }
 
 Firmware-Diy() {
