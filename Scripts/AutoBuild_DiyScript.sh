@@ -2,7 +2,7 @@
 # AutoBuild Module by Hyy2001 <https://github.com/Hyy2001X/AutoBuild-Actions>
 # AutoBuild DiyScript
 
-Diy_Core() {
+Firmware_Diy_Core() {
 
 	Author=TossP
 	Banner_Title="Powered by Lede"
