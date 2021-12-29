@@ -160,17 +160,17 @@ jobs:
         file_glob: true
         tag: AutoUpdate
         overwrite: true
-        
+
     - name: Download Github Release API
       if: env.UPLOAD_RELEASES == 'true' && env.Result == 'true' && !cancelled()
       run: |
         wget https://api.github.com/repos/${{github.repository}}/releases/tags/AutoUpdate -O API
-        
+
     - name: Upload API to Github Release
       if: env.UPLOAD_RELEASES == 'true' && env.Result == 'true' && !cancelled()
       uses: svenstaro/upload-release-action@v2
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        repo_token: ${{ secrets.REPO_TOKEN }}
         file: ./API
         file_glob: true
         tag: AutoUpdate
@@ -182,4 +182,4 @@ jobs:
       with:
         retain_days: 3
         keep_minimum_runs: 3
-      
+
