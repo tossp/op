@@ -98,7 +98,6 @@ Home=${Home}
 CONFIG_TEMP=${CONFIG_TEMP}
 INCLUDE_AutoBuild_Features=${INCLUDE_AutoBuild_Features}
 INCLUDE_Original_OpenWrt_Compatible=${INCLUDE_Original_OpenWrt_Compatible}
-INCLUDE_DRM_I915=${INCLUDE_DRM_I915}
 Checkout_Virtual_Images=${Checkout_Virtual_Images}
 AutoBuild_Firmware=${AutoBuild_Firmware}
 CustomFiles=${GITHUB_WORKSPACE}/CustomFiles
@@ -249,20 +248,11 @@ EOF
 			sed -i "s/${Old_IP}/${Default_IP}/g" ${BASE_FILES}/bin/config_generate
 		fi
 	}
-	[[ ${INCLUDE_DRM_I915} == true && ${TARGET_BOARD} == x86 ]] && {
-		for X in $(ls -1 target/linux/x86 | grep "config-")
-		do
-			cat >> ${Home}/target/linux/x86/${X} <<EOF
-
-CONFIG_64BIT=y
-CONFIG_DRM=y
-CONFIG_DRM_I915=y
-CONFIG_DRM_I915_GVT=y
-CONFIG_DUMMY_CONSOLE=y
-EOF
-		done
-		unset X
-	}
+	for X in $(ls -1 target/linux/generic | grep "config-")
+	do
+		sed -i '/CONFIG_FAT_DEFAULT_IOCHARSET/d' target/linux/generic/${X}
+		echo -e '\nCONFIG_FAT_DEFAULT_IOCHARSET="utf8"' >> target/linux/generic/${X}
+	done
 	ECHO "[Firmware_Diy_Main] Done"
 }
 
@@ -296,8 +286,8 @@ CONFIG_PACKAGE_dnsmasq-full=y
 # CONFIG_PACKAGE_wpad-wolfssl is not set
 CONFIG_PACKAGE_wpad-openssl=y
 EOF
-				Copy ${CustomFiles}/Patches/0003-upx-ucl-${OP_BRANCH}.patch ${Home}
-				cat 0003-upx-ucl-${OP_BRANCH}.patch | patch -p1 > /dev/null 2>&1
+				Copy ${CustomFiles}/Patches/fix_upx-ucl-${OP_BRANCH}.patch ${Home}
+				cat fix_upx-ucl-${OP_BRANCH}.patch | patch -p1 > /dev/null 2>&1
 				AddPackage svn feeds/packages golang coolsnowwolf/packages/trunk/lang
 				ECHO "Starting to convert zh-cn translation files to zh_Hans ..."
 				cd package && bash ${Scripts}/Convert_Translation.sh && cd -
