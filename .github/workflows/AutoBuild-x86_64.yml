@@ -180,6 +180,6 @@ jobs:
       uses: GitRML/delete-workflow-runs@main
       if: env.DELETE_OLD_WORKFLOW == 'true' && !cancelled()
       with:
-        retain_days: 3
+        retain_days: 1
         keep_minimum_runs: 3
 
