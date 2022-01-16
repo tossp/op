@@ -13,7 +13,7 @@ on:
     inputs:
       Tempoary_IP:
         description: '临时修改 IP 地址 [可选]'
-        default: ''
+        default: '192.168.9.54'
       Tempoary_CONFIG:
         description: '配置文件 [可选]'
         default: ''
@@ -34,7 +34,7 @@ env:
 # 编译时调用的 [.config] 文件名称
   CONFIG_FILE: x86_64
 # 源码仓库:分支
-  DEFAULT_SOURCE: openwrt/openwrt:openwrt-21.02
+  DEFAULT_SOURCE: openwrt/openwrt:master
 # 上传固件到 Github Releases
   UPLOAD_RELEASES: true
 # 上传固件到 Github Artifacts
