@@ -1,5 +1,5 @@
---- mac80211.sh1	2021-08-03 17:06:58.508824374 +0800
-+++ mac80211.sh2	2021-08-03 17:07:20.578410189 +0800
+--- a/package/kernel/mac80211/files/lib/wifi/mac80211.sh
++++ b/package/kernel/mac80211/files/lib/wifi/mac80211.sh
 @@ -174,14 +174,15 @@ detect_mac80211() {
  			set wireless.radio${devidx}.channel=${channel}
  			set wireless.radio${devidx}.band=${mode_band}
