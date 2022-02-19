@@ -40,7 +40,7 @@ env:
 # 上传固件到 Github Artifacts
   UPLOAD_ARTIFACTS: true
 # 上传 bin 文件夹到 Github Artifacts
-  UPLOAD_BIN_ARTIFACTS: true
+  UPLOAD_BIN_ARTIFACTS: false
 # 删除无用文件以增加编译空间
   DELETE_USELESS_FILES: true
 # 删除早期的 workflow 任务
@@ -50,13 +50,22 @@ env:
 jobs:
   Compile:
     runs-on: ubuntu-latest
-
     steps:
+    - name: Maximize Build Space
+      uses: easimon/maximize-build-space@master
+      with:
+        root-reserve-mb: 5120
+        swap-size-mb: 512
+        remove-dotnet: 'true'
+        remove-android: 'true'
+
     - name: Checkout
       uses: actions/checkout@main
 
     - name: Initialization Variables
       run: |
+        echo "Free space:"
+        df -h
         if [ -n "${{ github.event.inputs.Tempoary_CONFIG }}" ]
         then
             if [ -f "$GITHUB_WORKSPACE/Configs/${{ github.event.inputs.Tempoary_CONFIG }}" ]
@@ -78,7 +87,15 @@ jobs:
         fi
         if [ -n "${{ github.event.inputs.Tempoary_IP }}" ]
         then
+            echo "IP: [${{ github.event.inputs.Tempoary_IP }}]"
             echo "Tempoary_IP=${{ github.event.inputs.Tempoary_IP }}" >> $GITHUB_ENV
+        fi
+        if [ -n "${{ github.event.inputs.Tempoary_FLAG }}" ]
+        then
+            echo "FLAG: [${{ github.event.inputs.Tempoary_FLAG }}]"
+            echo "Tempoary_FLAG=${{ github.event.inputs.Tempoary_FLAG }}" >> $GITHUB_ENV
+        else
+            echo "env Tempoary_FLAG is not detected !"
         fi
         REPO_URL="https://github.com/$(echo ${{ env.DEFAULT_SOURCE }} | cut -d \: -f 1)"
         REPO_BRANCH=$(echo ${{ env.DEFAULT_SOURCE }} | cut -d \: -f 2)
@@ -128,7 +145,7 @@ jobs:
         Firmware_Diy_Other
         ./scripts/feeds install -a > /dev/null 2>&1
         make defconfig
-        make download -j$(nproc)
+        make download -j$(nproc) V=s
         make -j$(nproc) || make -j1 V=s
         [ $? == 0 ] && echo "Result=true" >> $GITHUB_ENV || echo "Result=false" >> $GITHUB_ENV
     - name: Process Firmware
@@ -155,21 +172,22 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       if: env.UPLOAD_RELEASES == 'true' && env.Result == 'true' && !cancelled()
       with:
-        repo_token: ${{ secrets.REPO_TOKEN }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: openwrt/bin/Firmware/*
         file_glob: true
         tag: AutoUpdate
         overwrite: true
-
+        
     - name: Download Github Release API
       if: env.UPLOAD_RELEASES == 'true' && env.Result == 'true' && !cancelled()
       run: |
         wget https://api.github.com/repos/${{github.repository}}/releases/tags/AutoUpdate -O API
+        
     - name: Upload API to Github Release
       if: env.UPLOAD_RELEASES == 'true' && env.Result == 'true' && !cancelled()
       uses: svenstaro/upload-release-action@v2
       with:
-        repo_token: ${{ secrets.REPO_TOKEN }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: ./API
         file_glob: true
         tag: AutoUpdate
