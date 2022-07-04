@@ -78,10 +78,12 @@ Firmware_Diy() {
 			cat ${CustomFiles}/x86_64_Kconfig >> ${WORK}/target/linux/x86/config-5.15
 
       # fix 8125 驱动
+      # https://github.com/csrutil/OpenWrt-NIC-Drivers
       AddPackage git ts OpenWrt-NIC-Drivers csrutil main
-      ls -la package/ts
-      cp -r package/ts/drivers/* package/
       ls -la package
+      ls -la package/ts
+      mv package/ts/OpenWrt-NIC-Drivers/drivers/* package/ts/
+      ls -la package/ts
 		;;
 		esac
 	;;
