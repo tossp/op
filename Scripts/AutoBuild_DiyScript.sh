@@ -76,6 +76,9 @@ Firmware_Diy() {
 			rm -rf packages/lean/autocore
 			AddPackage git lean autocore-modify Hyy2001X master
 			cat ${CustomFiles}/x86_64_Kconfig >> ${WORK}/target/linux/x86/config-5.15
+
+      # 8125 驱动
+      AddPackage git other OpenWrt-NIC-Drivers csrutil main
 		;;
 		esac
 	;;
