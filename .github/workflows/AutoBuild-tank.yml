@@ -4,7 +4,7 @@
 #   Author: Hyy2001X                                      #
 ###########################################################
 
-name: 编译 K3
+name: x86_64
 
 ### 以下内容请保持不变 ( 请修改下方的 [环境变量设置] )
 on:
@@ -25,12 +25,12 @@ on:
         required: false
 ### 控制部分结束 ( 以上内容请保持不变 )
 
-  #push:
-  #  branches:
-  #    - master
+  push:
+   branches:
+     - master
 
-  #schedule:
-  #  - cron: 0 8 * * 5
+  schedule:
+   - cron: 0 8 * * 5
 
   #watch:
   #  types: [started]
@@ -38,7 +38,7 @@ on:
 ### 环境变量设置
 env:
 # 编译时调用的 [.config] 文件名称
-  CONFIG_FILE: k3
+  CONFIG_FILE: tank
 # 源码仓库:分支
   DEFAULT_SOURCE: coolsnowwolf/lede:master
 # 上传固件到 Github Releases

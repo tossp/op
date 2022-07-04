@@ -1,25 +1,28 @@
 ###########################################################
-#   Description: Compile OpenWrt by GitHub Actions        #
-#   Based on: https://github.com/P3TERX/Actions-OpenWrt   #
+#   Description: Refresh Release API                      #
 #   Author: Hyy2001X                                      #
 ###########################################################
 
-name: Refresh_API
+name: Refresh API
 
 on:
   repository_dispatch:
   workflow_dispatch:
     inputs:
       refresh_switch:
-        description: '刷新 Release/API'
+        description: '手动刷新 API'
         default: 'true'
 
-  schedule:
-    - cron: 0 4,16 * * *
+#  schedule:
+#    - cron: 0 4,16 * * *
 
 jobs:
-  build:
+  Job:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: write
 
     steps:
     - name: Checkout
@@ -32,14 +35,8 @@ jobs:
     - name: Upload API to Github Release
       uses: svenstaro/upload-release-action@v2
       with:
-        repo_token: ${{ secrets.REPO_TOKEN }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: ./API
         file_glob: true
         tag: AutoUpdate
         overwrite: true
-
-    - name: Delete old Workflow Runs
-      uses: GitRML/delete-workflow-runs@main
-      with:
-        retain_days: 1
-        keep_minimum_runs: 1
