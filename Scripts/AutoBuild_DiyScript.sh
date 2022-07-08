@@ -79,11 +79,15 @@ Firmware_Diy() {
 
       # fix 8125 驱动
       # https://github.com/csrutil/OpenWrt-NIC-Drivers
-      AddPackage git ts OpenWrt-NIC-Drivers csrutil main
-      ls -la package
-      ls -la package/ts
-      mv package/ts/OpenWrt-NIC-Drivers/drivers/* package/ts/
-      ls -la package/ts
+      # AddPackage git csrutil OpenWrt-NIC-Drivers csrutil main
+      # ls -la package
+      # ls -la package/csrutil
+      # mv package/csrutil/OpenWrt-NIC-Drivers/drivers/* package/csrutil/
+      # rm -rf package/csrutil/OpenWrt-NIC-Drivers
+      # ls -la package/csrutil
+
+      # 自定义驱动
+      AddPackage git tossp op-packages tossp main
 		;;
 		esac
 	;;
