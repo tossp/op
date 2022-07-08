@@ -13,7 +13,8 @@ on:
     inputs:
       sync_mode:
         description: '同步上游所有内容'
-        default: 'false'
+        # default: 'false'
+        required: true
 
 env:
   SCRIPT_FILE: Scripts/Sync.sh

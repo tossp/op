@@ -11,10 +11,11 @@ on:
     inputs:
       refresh_switch:
         description: '手动刷新 API'
-        default: 'true'
+        # default: 'true'
+        required: false
 
-#  schedule:
-#    - cron: 0 4,16 * * *
+  schedule:
+    - cron: 0 4,16 * * *
 
 jobs:
   Job:

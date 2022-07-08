@@ -5,7 +5,7 @@
 Firmware_Diy_Core() {
 	Author=TossP
 	Author_URL="https://nas.tossp.com"
-	Default_FLAG=AUTO
+	Default_FLAG='AUTO'
 	Default_IP="192.168.9.1"
 	Banner_Message="Powered by TossP.com"
 
