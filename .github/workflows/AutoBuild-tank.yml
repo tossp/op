@@ -17,8 +17,8 @@ on:
         required: false
       Tempoary_CONFIG:
         description: '配置文件 [可选]'
-        # default: tank
-        required: false
+        default: tank
+        required: true
       Tempoary_FLAG:
         description: '固件标签 [可选]'
         # default: AUTO
