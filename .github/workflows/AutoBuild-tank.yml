@@ -21,8 +21,8 @@ on:
         required: true
       Tempoary_FLAG:
         description: '固件标签 [可选]'
-        # default: AUTO
-        required: false
+        default: tank
+        required: true
 ### 控制部分结束 ( 以上内容请保持不变 )
 
   push:
