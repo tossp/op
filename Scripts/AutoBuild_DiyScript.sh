@@ -88,6 +88,7 @@ Firmware_Diy() {
 
       # 自定义驱动
       AddPackage git tossp op-packages tossp main
+      AddPackage git kiddin9 luci-theme-edge kiddin9 master
 		;;
 		esac
 	;;
