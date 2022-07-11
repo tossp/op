@@ -206,7 +206,7 @@ jobs:
         overwrite: true
 
     - name: Delete old Workflow Runs
-      uses: GitRML/delete-workflow-runs@main
+      uses: Mattraks/delete-workflow-runs@v2
       if: env.DELETE_OLD_WORKFLOW == 'true' && !cancelled()
       with:
         retain_days: 1
