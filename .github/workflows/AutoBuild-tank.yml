@@ -184,7 +184,7 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       if: env.UPLOAD_RELEASES == 'true' && env.Result == 'true' && !cancelled()
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        repo_token: ${{ secrets.REPO_TOKEN }}
         file: openwrt/bin/Firmware/*
         file_glob: true
         tag: AutoUpdate
@@ -199,7 +199,7 @@ jobs:
       if: env.UPLOAD_RELEASES == 'true' && env.Result == 'true' && !cancelled()
       uses: svenstaro/upload-release-action@v2
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        repo_token: ${{ secrets.REPO_TOKEN }}
         file: ./API
         file_glob: true
         tag: AutoUpdate
