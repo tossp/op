@@ -117,3 +117,8 @@ CONFIG_PACKAGE_davfs2=y
 
 # CONFIG_PACKAGE_luci-app-unblockmusic is not set
 # CONFIG_PACKAGE_luci-app-xlnetacc is not set
+
+
+# fix
+CONFIG_PACKAGE_kmod-igb=n
+CONFIG_PACKAGE_kmod-igb-intel=y
