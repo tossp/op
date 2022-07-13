@@ -26,6 +26,7 @@ CONFIG_IPV6=y
 # CONFIG_IB=y
 # CONFIG_SDK=y
 
+CONFIG_PACKAGE_kmod-r8125=y
 CONFIG_PACKAGE_kmod-ikconfig=y
 
 CONFIG_PACKAGE_ipv6helper=y

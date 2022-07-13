@@ -95,6 +95,7 @@ Firmware_Diy() {
   immortalwrt/immortalwrt*)
     sed -i "s?/bin/login?/usr/libexec/login.sh?g" ${FEEDS_PKG}/ttyd/files/ttyd.config
     AddPackage git kiddin9 luci-theme-edge kiddin9 master
+    AddPackage git tossp op-packages tossp main
   ;;
   openwrt/openwrt*)
     AddPackage git tossp op-packages tossp main
