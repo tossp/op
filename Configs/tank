@@ -120,5 +120,4 @@ CONFIG_PACKAGE_davfs2=y
 
 
 # fix
-CONFIG_PACKAGE_kmod-igb=n
-CONFIG_PACKAGE_kmod-igb-intel=y
+# CONFIG_PACKAGE_kmod-igb is not set
