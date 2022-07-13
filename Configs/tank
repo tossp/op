@@ -115,3 +115,6 @@ CONFIG_PACKAGE_luci-app-vnstat2=y
 CONFIG_PACKAGE_luci-app-wireguard=y
 CONFIG_PACKAGE_luci-app-wol=y
 CONFIG_PACKAGE_luci-app-zerotier=y
+
+# https://github.com/Hyy2001X/AutoBuild-Packages
+CONFIG_PACKAGE_luci-app-autoupdate=y
