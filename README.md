@@ -147,3 +147,28 @@ AutoBuild-Actions 稳定版仓库地址: [AutoBuild-Actions-Template](https://gi
    - [[openwrt-autoupdate](https://github.com/mab-wien/openwrt-autoupdate)] [[Actions-OpenWrt](https://github.com/P3TERX/Actions-OpenWrt)]
 
    - 测试与建议: [CurssedCoffin](https://github.com/CurssedCoffin) [Licsber](https://github.com/Licsber) [sirliu](https://github.com/sirliu) [神雕](https://github.com/teasiu) [yehaku](https://www.right.com.cn/forum/space-uid-28062.html) [缘空空](https://github.com/NaiHeKK) [281677160](https://github.com/281677160)
+
+
+```
+src/gz openwrt_core https://mirrors.cloud.tencent.com/openwrt/releases/22.03.0/targets/x86/64/packages
+src/gz openwrt_base https://mirrors.cloud.tencent.com/openwrt/releases/22.03.0/packages/x86_64/base
+src/gz openwrt_luci https://mirrors.cloud.tencent.com/openwrt/releases/22.03.0/packages/x86_64/luci
+src/gz openwrt_packages https://mirrors.cloud.tencent.com/openwrt/releases/22.03.0/packages/x86_64/packages
+src/gz openwrt_routing https://mirrors.cloud.tencent.com/openwrt/releases/22.03.0/packages/x86_64/routing
+src/gz openwrt_telephony https://mirrors.cloud.tencent.com/openwrt/releases/22.03.0/packages/x86_64/telephony
+
+intel-microcode
+dnsmasq-full kmod-tun kmod-usb-net-rtl8152 6to4 luci-proto-ppp luci-proto-ipv6 luci-proto-bonding luci-proto-hnet luci-proto-gre luci-proto-bonding
+bash fish curl wget htop tree hdparm iperf3 vim-fuller ip-full tcpdump pciutils bind-dig drill qemu-ga
+luci luci-mod-admin-full luci-mod-admin-full luci-theme-material luci-i18n-base-zh-cn luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn
+
+luci-i18n-udpxy-zh-cn
+luci-i18n-mwan3-zh-cn kmod-macvlan
+luci-app-upnp luci-i18n-upnp-zh-cn
+luci-app-vnstat2 luci-i18n-vnstat2-zh-cn
+luci-app-wireguard luci-i18n-wireguard-zh-cn
+ddns-scripts-cloudflare luci-i18n-ddns-zh-cn
+luci-i18n-watchcat-zh-cn
+luci-i18n-wol-zh-cn
+luci-i18n-sqm-zh-cn luci-i18n-nft-qos-zh-cn
+```
