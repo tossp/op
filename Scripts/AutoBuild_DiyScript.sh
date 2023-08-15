@@ -51,7 +51,7 @@ Firmware_Diy() {
     # sed -i 's/..\/..\//\$\(TOPDIR\)\/feeds\/luci\//g' $(PKG_Finder d package luci-app-eqos)/Makefile
     # AddPackage svn other luci-app-socat immortalwrt/luci/branches/openwrt-18.06/applications
     # sed -i 's/..\/..\//\$\(TOPDIR\)\/feeds\/luci\//g' $(PKG_Finder d package luci-app-socat)/Makefile
-    # AddPackage git other OpenClash vernesong master
+    AddPackage git other OpenClash vernesong master
     # AddPackage git other luci-app-ikoolproxy iwrt main
     # AddPackage git other helloworld fw876 master
     # sed -i 's/143/143,8080,8443/' $(PKG_Finder d package luci-app-ssr-plus)/root/etc/init.d/shadowsocksr
@@ -87,7 +87,7 @@ Firmware_Diy() {
       # ls -la package/csrutil
 
       # 自定义驱动
-      AddPackage git tossp op-packages tossp main
+      # AddPackage git tossp op-packages tossp main
       AddPackage git kiddin9 luci-theme-edge kiddin9 18.06
     ;;
     esac
@@ -95,10 +95,10 @@ Firmware_Diy() {
   immortalwrt/immortalwrt*)
     sed -i "s?/bin/login?/usr/libexec/login.sh?g" ${FEEDS_PKG}/ttyd/files/ttyd.config
     AddPackage git kiddin9 luci-theme-edge kiddin9 master
-    AddPackage git tossp op-packages tossp main
+    # AddPackage git tossp op-packages tossp main
   ;;
   openwrt/openwrt*)
-    AddPackage git tossp op-packages tossp main
+    # AddPackage git tossp op-packages tossp main
     AddPackage git kiddin9 luci-theme-edge kiddin9 master
   ;;
   esac
